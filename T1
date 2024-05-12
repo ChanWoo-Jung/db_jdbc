@@ -1,0 +1,49 @@
+package jdbc;
+
+import java.sql.DriverManager;
+import java.sql.Connection;
+import java.sql.Statement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+public class T1 {
+
+	String driver = "org.postgresql.Driver";
+
+	String url = "jdbc:postgresql://localhost:5432/Task_DB";
+	String user = "postgres";
+	String password = "1234";
+
+	Connection conn = null;
+	Statement st = null;
+	ResultSet rs = null;
+	String sql = "Select * from takes";
+
+	public void do_practice1() {
+		try {
+
+			Class.forName(driver);
+			conn = DriverManager.getConnection(url, user, password);
+			st = conn.createStatement();
+			rs = st.executeQuery(sql);
+
+			while (rs.next()) {
+				String id = rs.getString("id");
+				String course_id = rs.getString("course_id");
+				String sec_id = rs.getString("sec_id");
+				String semester = rs.getString("semester");
+				int year = rs.getInt("year");
+				String grade = rs.getString("grade");
+				System.out.println(id + "\t" + course_id + "\t" + sec_id + "\t" + semester + "\t" + grade);
+
+			}
+			rs.close();
+			st.close();
+			conn.close();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+}
